@@ -54,7 +54,7 @@ export default function App() {
         const allSameVal = newDice.every(dice => dice.value === newDice[0].value)
         if (allHeld && allSameVal) {
             setTenzies(true)
-            console.log("You Won")
+            // console.log("You Won")
         }
 
     }, [newDice])
