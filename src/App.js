@@ -33,16 +33,19 @@ export default function App() {
 
     const [tenzies, setTenzies] = React.useState(false)
 
+    const [rollCount, setRollCount] = React.useState(0)
+
 
     function reroll() {
         if (!tenzies) {
             setNewDice(oldDice => oldDice.map((dice) => {
                     return dice.isHeld === true ? dice : generateNewDie()
-                }))        
+                }))    
+            setRollCount(prevCount => prevCount + 1)    
         } else {
             setTenzies(false)
             setNewDice(allNewDice())
-
+            setRollCount(0) 
         }
     }
 
@@ -80,6 +83,8 @@ export default function App() {
             </div>
 
             <button className="roll-dice" onClick= {reroll}>{tenzies ? "New Game": "Roll"}</button>
+
+            <p>Roll Count: {rollCount}</p> 
         </main>
     )
 }
