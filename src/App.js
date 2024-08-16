@@ -81,7 +81,7 @@ export default function App() {
             }
 
         }
-    }, [newDice]);
+    }, [newDice, startTime, bestTime]);
 
     function hold(id) {
         setNewDice(oldDice => oldDice.map(dice => {
