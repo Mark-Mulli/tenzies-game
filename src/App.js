@@ -28,6 +28,14 @@ export default function App() {
     const [startTime, setStartTime] = React.useState(null);
     const [elapsedTime, setElapsedTime] = React.useState(null);
     const [showModal, setShowModal] = React.useState(false); // State for showing the modal
+    const [bestTime, setBestTime] = React.useState(null)
+
+    React.useEffect(() => {
+        const savedBestTime = localStorage.getItem('bestTime')
+        if (savedBestTime) {
+            setBestTime(savedBestTime)
+        }
+    }, [])
 
     function reroll() {
         if (!tenzies) {
@@ -36,7 +44,7 @@ export default function App() {
             }));
             setRollCount(prevCount => prevCount + 1);
 
-            if (rollCount === 1) {
+            if (rollCount === 0) {
                 setStartTime(new Date());
             }
         } else {
@@ -50,7 +58,7 @@ export default function App() {
         setRollCount(0);
         setStartTime(null);
         setElapsedTime(null);
-        setShowModal(false); // Hide the modal when starting a new game
+        setShowModal(false); 
     }
 
     React.useEffect(() => {
@@ -60,9 +68,18 @@ export default function App() {
             setTenzies(true);
             if (startTime) {
                 const endTime = new Date();
-                setElapsedTime(((endTime - startTime) / 1000).toFixed(2));
-                setShowModal(true); // Show the modal when the game is completed
+                const timeElapsed = ((endTime - startTime) / 1000).toFixed(2)
+                setElapsedTime(timeElapsed);
+                
+
+                if (!bestTime || parseFloat(timeElapsed) < parseFloat(bestTime)) {
+                    setBestTime(timeElapsed)
+                    localStorage.setItem('bestTime', timeElapsed)
+                }
+
+                setShowModal(true); 
             }
+
         }
     }, [newDice]);
 
@@ -91,17 +108,20 @@ export default function App() {
                 </button>
             )}
         
-            {showModal && (
-                <div className="modal">
-                    <div className="modal-content">
-                        <h2>Congratulations!</h2>
-                        <p>You won in {rollCount} rolls.</p>
-                        <p>Time Elapsed: {elapsedTime} seconds</p>
-                        {console.log(elapsedTime)}
-                        <button className="roll-dice" onClick={startNewGame}>New Game</button>
-                    </div>
+            
+            <div className = {`modal ${showModal ? "show" : ""}`}>
+                <div className="modal-content">
+                    <h2>Congratulations!</h2>
+                    <p>You won in {rollCount} rolls.</p>
+                    <p>Time Elapsed: {elapsedTime} seconds</p>
+                    {bestTime && <p>Best Time: {bestTime} seconds</p>}
+                    {console.log(bestTime)}
+                    <button className="roll-dice" onClick={startNewGame}>New Game</button>
                 </div>
-            )}
+            </div>
+
+
+        <img src={require("./images/mylogo.gif")} alt="Watermark" className="watermark" />
         </main>
     );
 }

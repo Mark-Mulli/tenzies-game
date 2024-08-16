@@ -3,7 +3,7 @@ import React from "react";
 export default function Die(props) {
 
     const styles = {
-        backgroundColor: props.isHeld ? "#59E391" : "white",
+        background: props.isHeld ? "linear-gradient(15deg, #13547a 0%, #80d0c7 100%)" : "white",
         
     }
 
