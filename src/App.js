@@ -72,14 +72,12 @@ export default function App() {
                 setElapsedTime(timeElapsed);
                 
 
-                // Update best time and save to localStorage
-                const newBestTime = bestTime ? Math.min(parseFloat(timeElapsed), parseFloat(bestTime)) : parseFloat(timeElapsed);
-                if (newBestTime !== parseFloat(timeElapsed)) {
-                    setBestTime(newBestTime.toFixed(2));
-                    localStorage.setItem('bestTime', newBestTime.toFixed(2));
+                if (!bestTime || parseFloat(timeElapsed) < parseFloat(bestTime)) {
+                    setBestTime(timeElapsed)
+                    localStorage.setItem('bestTime', timeElapsed)
                 }
-                setShowModal(true);
-                
+
+                setShowModal(true); 
             }
 
         }
